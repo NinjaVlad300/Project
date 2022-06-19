@@ -6,6 +6,15 @@ public abstract class Element {
     double square;
     double depth;
 
+    public String getFullName() {
+        if (square != 0){
+            return name + "     |   Площадь загрязнения: " + square + " Глубина загрязнения: " + depth;
+
+        }else {
+            return name + "     |   Работы не требуеются";
+        }
+    }
+
     public String getName() {
         return name;
     }

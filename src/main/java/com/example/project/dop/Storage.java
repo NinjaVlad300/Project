@@ -1,4 +1,4 @@
-package com.example.project;
+package com.example.project.dop;
 
 import com.example.project.elements.objects.Room;
 import com.example.project.elements.workings.Work;

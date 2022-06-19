@@ -18,6 +18,10 @@ public class Room {
     private double power;
     private double activity;
 
+    public String getFullName() {
+        return name + " " + place;
+    }
+
     public Element getElement(String namePart) {
         Element element = null;
         switch (namePart) {

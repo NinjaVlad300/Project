@@ -1,9 +1,8 @@
-package com.example.project.parsers;
+package com.example.project.dop;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.example.project.Storage;
 import com.example.project.elements.objects.Room;
 import com.example.project.elements.objects.elements.Floor;
 import com.example.project.elements.objects.elements.Roof;

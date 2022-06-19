@@ -1,10 +1,10 @@
 package com.example.project.elements.workings;
 
-import com.example.project.Storage;
+import com.example.project.dop.Storage;
 
 public class Work {
-
     int idRoom;
+
     String namePart;    // Часть (Пол, стены, потолок)
     String nameWork;
     String deskWork;
@@ -15,48 +15,61 @@ public class Work {
     double price; // = price капитал
 
 
-    double priceInt = 10;  /// !!!!!!! Поулчать из интерфейса
-
+    public String getFullName() {
+        return nameWork + "     |   Тип работы: " + type;
+    }
 
     // норма времени
     double time = 0;
-    public double getTime() {
-        if (time == 0) {
-            if (type.equals("Скол")) {
-                time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * timeTick / numberWorkers;
-            } else {
-                time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * timeTick / numberWorkers;
-            }
+
+    public void setTime() {
+
+        if (type.equals("Скол")) {
+            time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * timeTick / numberWorkers;
+        } else {
+            time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * timeTick / numberWorkers;
         }
-        return time;
     }
 
     double cost = 0;
-    public double getCost() {
-        if (cost == 0) {
-            if (type.equals("Скол")) {
-                cost = price * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + getTime() * numberWorkers * priceInt;
-            } else {
-                cost = price * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + getTime() * numberWorkers * priceInt;
-            }
+
+    double kdo = 0;
+
+    public void setCost(double costT) {
+        setTime();
+        if (type.equals("Скол")) {
+            cost = price * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + time * numberWorkers * costT;
+        } else {
+            cost = price * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + time * numberWorkers * costT;
         }
+    }
+
+    public double getTime() {
+        return time;
+    }
+
+    public double getCost() {
         return cost;
     }
 
-    double kdo = 0;
     public double getKdo() {
-        if (kdo == 0) {
-            kdo = Storage.getInstance().getRoomWithId(idRoom).getPower() * getTime() * numberWorkers;
-        }
         return kdo;
     }
 
-    double ido = 0;
     public double getIdo() {
-        if (ido == 0) {
-            ido = getKdo() / numberWorkers;
-        }
         return ido;
+    }
+
+    public void setKdo() {
+        setTime();
+        kdo = Storage.getInstance().getRoomWithId(idRoom).getPower() * time * numberWorkers;
+    }
+
+    double ido = 0;
+
+    public void setIdo() {
+        setKdo();
+        ido = kdo / numberWorkers;
     }
 
 

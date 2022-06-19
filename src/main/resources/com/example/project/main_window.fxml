@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.Controller">
    <children>
       <Button layoutX="758.0" layoutY="26.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="66.0" prefWidth="113.0" text="Выбрать файл" />
       <TreeView fx:id="tree" layoutX="10.0" layoutY="10.0" prefHeight="446.0" prefWidth="724.0" />
@@ -22,5 +22,7 @@
       <TextField fx:id="timeField" layoutX="190.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
       <TextField fx:id="kdoField" layoutX="344.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
       <TextField fx:id="idoField" layoutX="477.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
+      <Label layoutX="757.0" layoutY="254.0" prefHeight="45.0" prefWidth="114.0" text="цена единицы работы (трудовая) " textAlignment="CENTER" wrapText="true" />
+      <TextField fx:id="priceField" alignment="CENTER" layoutX="770.0" layoutY="300.0" prefHeight="26.0" prefWidth="87.0" text="10" />
    </children>
 </AnchorPane>

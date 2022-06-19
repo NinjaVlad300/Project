@@ -7,4 +7,6 @@ module com.example.rad {
 
     opens com.example.project to javafx.fxml;
     exports com.example.project;
+    exports com.example.project.dop;
+    opens com.example.project.dop to javafx.fxml;
 }
