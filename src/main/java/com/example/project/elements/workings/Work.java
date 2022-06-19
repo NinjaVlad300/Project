@@ -4,7 +4,6 @@ import com.example.project.dop.Storage;
 
 public class Work {
     int idRoom;
-
     String namePart;    // Часть (Пол, стены, потолок)
     String nameWork;
     String deskWork;
@@ -14,12 +13,10 @@ public class Work {
     int numberWorkers;      // кол-во раб
     double price; // = price капитал
 
-
     public String getFullName() {
         return nameWork + "     |   Тип работы: " + type;
     }
 
-    // норма времени
     double time = 0;
 
     public void setTime() {

@@ -8,7 +8,7 @@ public abstract class Element {
 
     public String getFullName() {
         if (square != 0){
-            return name + "     |   Площадь загрязнения: " + square + " Глубина загрязнения: " + depth;
+            return name + "     |   Площадь загрязнения: " + square + "     Глубина загрязнения: " + depth;
 
         }else {
             return name + "     |   Работы не требуеются";

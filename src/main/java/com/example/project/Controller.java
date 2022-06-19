@@ -18,6 +18,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Controller {
 
@@ -62,16 +63,26 @@ public class Controller {
     }
 
     public void initialize() {
+
+        idoField.setEditable(false);
+        kdoField.setEditable(false);
+        timeField.setEditable(false);
+        costField.setEditable(false);
+
+
         try {
-            imp.impObject(new File(Application.class.getResource("1.xlsx").getFile()));
-            imp.impWorks(new File(Application.class.getResource("2.xlsx").getFile()));
+            InputStream isObject = (getClass().getResourceAsStream("1.xlsx"));
+            imp.impObject(imp.createWorkbook(isObject));
+
+
+            InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+            imp.impWorks(imp.createWorkbook(isWorks));
 
             initializeTree();
-            info("Все данные загружены");
 
         } catch (Exception e) {
             e.printStackTrace();
-            error("Ошибка" + e.getMessage());
+            error("Ошибка " + e.getMessage());
         }
 
         // Чтобы в поле можно было писать только числа
@@ -91,6 +102,8 @@ public class Controller {
             }
         });
 
+        info("Все данные загружены");
+
     }
 
     @FXML
@@ -103,18 +116,21 @@ public class Controller {
 
             Storage.getInstance().getWorks().clear();
 
-            imp.impWorks(file);
+            imp.impWorks(imp.createWorkbook(file));
 
             if (Storage.getInstance().getWorks().size() == 0) {
-                error("Ошибка");
-                imp.impWorks(new File(Application.class.getResource("2.xlsx").getFile()));
+                InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+                imp.impWorks(imp.createWorkbook(isWorks));
+                error("Ошибка ");
             } else {
                 info("Файл успешно загружен");
             }
 
         } catch (Exception e) {
+            InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+            imp.impWorks(imp.createWorkbook(isWorks));
             error("Ошибка "+ e.getMessage());
-            imp.impWorks(new File(Application.class.getResource("2.xlsx").getFile()));
+            e.printStackTrace();
         }
         initializeTree();
     }

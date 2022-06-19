@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.Controller">
    <children>
-      <Button layoutX="758.0" layoutY="26.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="66.0" prefWidth="113.0" text="Выбрать файл" />
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="758.0" layoutY="26.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="90.0" prefWidth="114.0" text="Выбрать файл со списком работ" textAlignment="CENTER" wrapText="true" />
       <TreeView fx:id="tree" layoutX="10.0" layoutY="10.0" prefHeight="446.0" prefWidth="724.0" />
       <Label layoutX="32.0" layoutY="520.0" prefHeight="26.0" prefWidth="114.0" text="Стоимость проекта" />
       <Button layoutX="46.0" layoutY="547.0" mnemonicParsing="false" onAction="#costProject" prefHeight="26.0" prefWidth="87.0" text="Рассчитать" />
@@ -18,7 +18,7 @@
       <Button layoutX="478.0" layoutY="547.0" mnemonicParsing="false" onAction="#idoProject" prefHeight="26.0" prefWidth="87.0" text="Рассчитать" />
       <Button layoutX="344.0" layoutY="547.0" mnemonicParsing="false" onAction="#kdoProject" prefHeight="26.0" prefWidth="87.0" text="Рассчитать" />
       <Button layoutX="190.0" layoutY="547.0" mnemonicParsing="false" onAction="#timeProject" prefHeight="26.0" prefWidth="87.0" text="Рассчитать" />
-      <TextField fx:id="costField" layoutX="46.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
+      <TextField fx:id="costField" layoutX="6.0" layoutY="585.0" prefHeight="26.0" prefWidth="158.0" />
       <TextField fx:id="timeField" layoutX="190.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
       <TextField fx:id="kdoField" layoutX="344.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
       <TextField fx:id="idoField" layoutX="477.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
