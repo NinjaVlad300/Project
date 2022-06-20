@@ -1,26 +1,29 @@
-package com.example.project;
+package com.example.project.controllers;
 
+import com.example.project.Application;
 import com.example.project.dop.Calculator;
 import com.example.project.dop.Storage;
-import com.example.project.elements.objects.Room;
-import com.example.project.elements.workings.Work;
 import com.example.project.dop.Import;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.example.project.objects.Room;
+import com.example.project.objects.Work;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Controller {
+public class MainWindowController {
 
     @FXML
     private TextField costField;
@@ -44,6 +47,36 @@ public class Controller {
 
     Calculator calculator = new Calculator();
 
+    @FXML
+    void startRandCol(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("col_view.fxml"));
+            Scene Scene = new Scene(fxmlLoader.load());
+            Stage orderStage = new Stage();
+            orderStage.setTitle("Коллективная эквивалентная доза");
+            orderStage.setScene(Scene);
+            orderStage.initModality(Modality.APPLICATION_MODAL);
+            orderStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void startRandInd(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ind_view.fxml"));
+            Scene Scene = new Scene(fxmlLoader.load());
+            Stage orderStage = new Stage();
+            orderStage.setTitle("Индивидуальная эквивалентная доза");
+            orderStage.setScene(Scene);
+            orderStage.initModality(Modality.APPLICATION_MODAL);
+            orderStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     void error(String e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeight(400);
@@ -54,12 +87,12 @@ public class Controller {
     }
 
     void info(String e) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeight(400);
-        alert.setTitle("Info");
-        alert.setHeaderText(null);
-        alert.setContentText(e);
-        alert.showAndWait();
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setHeight(400);
+//        alert.setTitle("Info");
+//        alert.setHeaderText(null);
+//        alert.setContentText(e);
+//        alert.showAndWait();
     }
 
     public void initialize() {
@@ -71,11 +104,11 @@ public class Controller {
 
 
         try {
-            InputStream isObject = (getClass().getResourceAsStream("1.xlsx"));
+            InputStream isObject = (Application.class.getResourceAsStream("1.xlsx"));
             imp.impObject(imp.createWorkbook(isObject));
 
 
-            InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+            InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
             imp.impWorks(imp.createWorkbook(isWorks));
 
             initializeTree();
@@ -85,22 +118,6 @@ public class Controller {
             error("Ошибка " + e.getMessage());
         }
 
-        // Чтобы в поле можно было писать только числа
-        priceField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    priceField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-                if (priceField.getText().equals("0")) {
-                    String number = priceField.getText();
-                    priceField.replaceText(0, number.length(), "1");
-                } else if (priceField.getText().equals("")) {
-                    priceField.replaceText(0, 0, "1");
-                }
-            }
-        });
 
         info("Все данные загружены");
 
@@ -119,7 +136,7 @@ public class Controller {
             imp.impWorks(imp.createWorkbook(file));
 
             if (Storage.getInstance().getWorks().size() == 0) {
-                InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+                InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
                 imp.impWorks(imp.createWorkbook(isWorks));
                 error("Ошибка ");
             } else {
@@ -127,7 +144,7 @@ public class Controller {
             }
 
         } catch (Exception e) {
-            InputStream isWorks = (getClass().getResourceAsStream("2.xlsx"));
+            InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
             imp.impWorks(imp.createWorkbook(isWorks));
             error("Ошибка "+ e.getMessage());
             e.printStackTrace();

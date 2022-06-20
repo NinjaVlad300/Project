@@ -1,4 +1,4 @@
-package com.example.project.elements.workings;
+package com.example.project.objects;
 
 import com.example.project.dop.Storage;
 
@@ -19,6 +19,11 @@ public class Work {
 
     double time = 0;
 
+    double cost = 0;
+
+    double kdo = 0;
+
+
     public void setTime() {
 
         if (type.equals("Скол")) {
@@ -27,10 +32,6 @@ public class Work {
             time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * timeTick / numberWorkers;
         }
     }
-
-    double cost = 0;
-
-    double kdo = 0;
 
     public void setCost(double costT) {
         setTime();
@@ -62,7 +63,10 @@ public class Work {
         kdo = Storage.getInstance().getRoomWithId(idRoom).getPower() * time * numberWorkers;
     }
 
+
     double ido = 0;
+
+
 
     public void setIdo() {
         setKdo();

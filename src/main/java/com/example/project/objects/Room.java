@@ -1,9 +1,11 @@
-package com.example.project.elements.objects;
+package com.example.project.objects;
 
-import com.example.project.elements.objects.elements.Element;
-import com.example.project.elements.objects.elements.Floor;
-import com.example.project.elements.objects.elements.Roof;
-import com.example.project.elements.objects.elements.Wall;
+import com.example.project.objects.elements.Element;
+import com.example.project.objects.elements.Floor;
+import com.example.project.objects.elements.Roof;
+import com.example.project.objects.elements.Wall;
+
+import java.util.Random;
 
 public class Room {
 
@@ -14,9 +16,16 @@ public class Room {
     private Floor floor;
     private Roof roof;
     private Wall wall;
-
     private double power;
     private double activity;
+
+    public void setActivity(double activity) {
+        this.activity = activity;
+    }
+
+    public void setPower(double power) {
+        this.power = power;
+    }
 
     public String getFullName() {
         return name + " " + place;
@@ -33,19 +42,18 @@ public class Room {
     }
 
     public double getPower() {
-        return power;
-    }
-
-    public void setPower(double power) {
-        this.power = power;
+        Random random = new Random();
+        double powerRand = this.power;
+        if (place.equals("Этаж 1")) {
+            powerRand = random.nextGaussian()*5 + power;
+        }else if (place.equals("Этаж 2")) {
+            powerRand = random.nextGaussian()*10 + power;
+        }
+        return powerRand;
     }
 
     public double getActivity() {
         return activity;
-    }
-
-    public void setActivity(double activity) {
-        this.activity = activity;
     }
 
     public int getId() {

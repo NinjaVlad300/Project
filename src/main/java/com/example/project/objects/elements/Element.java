@@ -1,4 +1,4 @@
-package com.example.project.elements.objects.elements;
+package com.example.project.objects.elements;
 
 public abstract class Element {
 

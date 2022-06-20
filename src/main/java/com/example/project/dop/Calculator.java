@@ -1,6 +1,6 @@
 package com.example.project.dop;
 
-import com.example.project.elements.workings.Work;
+import com.example.project.objects.Work;
 
 public class Calculator {
 
@@ -39,5 +39,6 @@ public class Calculator {
         }
         return ido / Storage.getInstance().getWorks().size();
     }
+
 
 }

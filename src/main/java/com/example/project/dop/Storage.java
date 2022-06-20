@@ -1,7 +1,7 @@
 package com.example.project.dop;
 
-import com.example.project.elements.objects.Room;
-import com.example.project.elements.workings.Work;
+import com.example.project.objects.Room;
+import com.example.project.objects.Work;
 
 import java.util.ArrayList;
 

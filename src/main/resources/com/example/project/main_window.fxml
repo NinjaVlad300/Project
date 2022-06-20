@@ -6,10 +6,10 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.MainWindowController">
    <children>
       <Button alignment="CENTER" contentDisplay="CENTER" layoutX="758.0" layoutY="26.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="90.0" prefWidth="114.0" text="Выбрать файл со списком работ" textAlignment="CENTER" wrapText="true" />
-      <TreeView fx:id="tree" layoutX="10.0" layoutY="10.0" prefHeight="446.0" prefWidth="724.0" />
+      <TreeView fx:id="tree" layoutX="10.0" layoutY="10.0" prefHeight="446.0" prefWidth="737.0" />
       <Label layoutX="32.0" layoutY="520.0" prefHeight="26.0" prefWidth="114.0" text="Стоимость проекта" />
       <Button layoutX="46.0" layoutY="547.0" mnemonicParsing="false" onAction="#costProject" prefHeight="26.0" prefWidth="87.0" text="Рассчитать" />
       <Label layoutX="190.0" layoutY="520.0" prefHeight="26.0" prefWidth="114.0" text="Время проекта" />
@@ -24,5 +24,7 @@
       <TextField fx:id="idoField" layoutX="477.0" layoutY="585.0" prefHeight="26.0" prefWidth="87.0" />
       <Label layoutX="757.0" layoutY="254.0" prefHeight="45.0" prefWidth="114.0" text="цена единицы работы (трудовая) " textAlignment="CENTER" wrapText="true" />
       <TextField fx:id="priceField" alignment="CENTER" layoutX="770.0" layoutY="300.0" prefHeight="26.0" prefWidth="87.0" text="10" />
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="619.0" layoutY="495.0" mnemonicParsing="false" onAction="#startRandCol" prefHeight="104.0" prefWidth="114.0" text="Генерация коллективной эквивалентной дозы" textAlignment="CENTER" wrapText="true" />
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="757.0" layoutY="494.0" mnemonicParsing="false" onAction="#startRandInd" prefHeight="104.0" prefWidth="114.0" text="Генерация индивидуальной эквивалентной дозы" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>
