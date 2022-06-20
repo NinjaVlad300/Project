@@ -1,44 +1,77 @@
 package com.example.project.objects;
 
 import com.example.project.dop.Storage;
+import com.example.project.objects.elements.Element;
 
 public class Work {
     int idRoom;
     String namePart;    // Часть (Пол, стены, потолок)
     String nameWork;
     String deskWork;
-    String type;    // Поверхностная или скол
+    String type;        // Поверхностная или скол
     int priority;
-    int timeTick;   // норма времени
-    int numberWorkers;      // кол-во раб
-    double price; // = price капитал
+    int timeTick;       // норма времени
+    int numberWorkers;  // кол-во рабочих
+    double price;       // = price капитальная
+    double time = 0;
+    double cost = 0;
+    double cdo = 0;
+    double ido = 0;
 
     public String getFullName() {
         return nameWork + "     |   Тип работы: " + type;
     }
 
-    double time = 0;
+    public String getNameWork() {
+        return nameWork;
+    }
 
-    double cost = 0;
+    public String getType() {
+        return type;
+    }
 
-    double kdo = 0;
+    public int getPriority() {
+        return priority;
+    }
 
+    public int getTimeTick() {
+        return timeTick;
+    }
+
+    public int getNumberWorkers() {
+        return numberWorkers;
+    }
+
+    public double getPrice() {
+        return price;
+    }
 
     public void setTime() {
-
+        Element element = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart);
         if (type.equals("Скол")) {
-            time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * timeTick / numberWorkers;
+            time = element.getSquare() * timeTick / numberWorkers * Math.ceil(element.getDepth() / 10);
         } else {
-            time = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() * timeTick / numberWorkers;
+            time = element.getSquare() * timeTick / numberWorkers;
         }
     }
 
+    public void setKdo() {
+        setTime();
+        cdo = Storage.getInstance().getRoomWithId(idRoom).getPower() * time * numberWorkers;
+    }
+
+    public void setIdo() {
+        setKdo();
+        ido = cdo / numberWorkers;
+    }
+
     public void setCost(double costT) {
+        Element element = Storage.getInstance().getRoomWithId(idRoom).getElement(namePart);
         setTime();
         if (type.equals("Скол")) {
-            cost = price * Math.ceil(Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getDepth() / 10) * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + time * numberWorkers * costT;
+            cost = price * element.getSquare() + time * numberWorkers * costT * Math.ceil(element.getDepth() / 10) ;
         } else {
-            cost = price * Storage.getInstance().getRoomWithId(idRoom).getElement(namePart).getSquare() + time * numberWorkers * costT;
+            cost = price * element.getSquare() + time * numberWorkers * costT;
         }
     }
 
@@ -50,29 +83,13 @@ public class Work {
         return cost;
     }
 
-    public double getKdo() {
-        return kdo;
+    public double getCdo() {
+        return cdo;
     }
 
     public double getIdo() {
         return ido;
     }
-
-    public void setKdo() {
-        setTime();
-        kdo = Storage.getInstance().getRoomWithId(idRoom).getPower() * time * numberWorkers;
-    }
-
-
-    double ido = 0;
-
-
-
-    public void setIdo() {
-        setKdo();
-        ido = kdo / numberWorkers;
-    }
-
 
     public int getIdRoom() {
         return idRoom;
@@ -90,10 +107,6 @@ public class Work {
         this.namePart = namePart;
     }
 
-    public String getNameWork() {
-        return nameWork;
-    }
-
     public void setNameWork(String nameWork) {
         this.nameWork = nameWork;
     }
@@ -106,43 +119,24 @@ public class Work {
         this.deskWork = deskWork;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
-    }
-
-    public double getPrice() {
-        return price;
     }
 
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
     public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public int getTimeTick() {
-        return timeTick;
     }
 
     public void setTimeTick(int timeTick) {
         this.timeTick = timeTick;
     }
 
-    public int getNumberWorkers() {
-        return numberWorkers;
-    }
-
     public void setNumberWorkers(int numberWorkers) {
         this.numberWorkers = numberWorkers;
     }
+
 }

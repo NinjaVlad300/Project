@@ -44,8 +44,8 @@ public class Storage {
     }
 
     public Room getRoomWithId(int id) {
-        for (Room room: rooms) {
-            if (id == room.getId()){
+        for (Room room : rooms) {
+            if (id == room.getId()) {
                 return room;
             }
         }

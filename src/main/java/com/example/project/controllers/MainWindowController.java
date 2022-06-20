@@ -2,8 +2,8 @@ package com.example.project.controllers;
 
 import com.example.project.Application;
 import com.example.project.dop.Calculator;
-import com.example.project.dop.Storage;
 import com.example.project.dop.Import;
+import com.example.project.dop.Storage;
 import com.example.project.objects.Room;
 import com.example.project.objects.Work;
 import javafx.event.ActionEvent;
@@ -25,30 +25,53 @@ import java.io.InputStream;
 
 public class MainWindowController {
 
+    Import imp = new Import();
+    Calculator calculator = new Calculator();
     @FXML
     private TextField costField;
-
     @FXML
     private TextField idoField;
-
     @FXML
     private TextField kdoField;
-
     @FXML
     private TextField timeField;
-
     @FXML
     private TextField priceField;
-
     @FXML
     private TreeView<String> tree;
 
-    Import imp = new Import();
+    // Метод, вызываемый автоматически при запуске окна
+    public void initialize() {
 
-    Calculator calculator = new Calculator();
+        //  Запрет на изменение полей для отображения значений
+        idoField.setEditable(false);
+        kdoField.setEditable(false);
+        timeField.setEditable(false);
+        costField.setEditable(false);
+
+        try {
+            //  Получение файлов из ресурсов и последующий импорт информации из них
+            InputStream isObject = (Application.class.getResourceAsStream("1.xlsx"));
+            imp.impObject(imp.createWorkbook(isObject));
+
+            InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
+            imp.impWorks(imp.createWorkbook(isWorks));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            error("Ошибка " + e.getMessage());
+        }
+
+        //  Инициализация дерева из данных, полученных из файлов
+        initializeTree();
+
+       info("Все данные загружены");
+
+    }
 
     @FXML
     void startRandCol(ActionEvent event) {
+        // Вызов окна приложения с генерацией Коллективной эквивалентной дозы
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("col_view.fxml"));
             Scene Scene = new Scene(fxmlLoader.load());
@@ -64,6 +87,7 @@ public class MainWindowController {
 
     @FXML
     void startRandInd(ActionEvent event) {
+        // Вызов окна приложения с генерацией Индивидуальный эквивалентной дозы
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ind_view.fxml"));
             Scene Scene = new Scene(fxmlLoader.load());
@@ -86,41 +110,13 @@ public class MainWindowController {
         alert.showAndWait();
     }
 
-    void info(String e) {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setHeight(400);
-//        alert.setTitle("Info");
-//        alert.setHeaderText(null);
-//        alert.setContentText(e);
-//        alert.showAndWait();
-    }
-
-    public void initialize() {
-
-        idoField.setEditable(false);
-        kdoField.setEditable(false);
-        timeField.setEditable(false);
-        costField.setEditable(false);
-
-
-        try {
-            InputStream isObject = (Application.class.getResourceAsStream("1.xlsx"));
-            imp.impObject(imp.createWorkbook(isObject));
-
-
-            InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
-            imp.impWorks(imp.createWorkbook(isWorks));
-
-            initializeTree();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Ошибка " + e.getMessage());
-        }
-
-
-        info("Все данные загружены");
-
+    void info(String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeight(400);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 
     @FXML
@@ -131,10 +127,13 @@ public class MainWindowController {
             fc.getExtensionFilters().add(extFilter);
             File file = fc.showOpenDialog(null);
 
+            //  Очищение списка с выполняемыми работами
             Storage.getInstance().getWorks().clear();
 
+            //  Импорт выполняемых работ из нового файла
             imp.impWorks(imp.createWorkbook(file));
 
+            //  Если файл неправильный, то вызов ошибки и заполнение списка работ исходными данными
             if (Storage.getInstance().getWorks().size() == 0) {
                 InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
                 imp.impWorks(imp.createWorkbook(isWorks));
@@ -142,13 +141,14 @@ public class MainWindowController {
             } else {
                 info("Файл успешно загружен");
             }
-
         } catch (Exception e) {
+            //  Если возникла ошибка в ходе работы, то вызов ошибки и заполнение списка работ исходными данными
             InputStream isWorks = (Application.class.getResourceAsStream("2.xlsx"));
             imp.impWorks(imp.createWorkbook(isWorks));
-            error("Ошибка "+ e.getMessage());
+            error("Ошибка " + e.getMessage());
             e.printStackTrace();
         }
+        // Заполнение дерева с новыми данными
         initializeTree();
     }
 
@@ -156,7 +156,6 @@ public class MainWindowController {
         TreeItem<String> root = new TreeItem<>();
 
         for (Room room : Storage.getInstance().getRooms()) {
-
 
             TreeItem<String> roomItem = new TreeItem<>(room.getFullName());
             root.getChildren().add(roomItem);
@@ -192,37 +191,46 @@ public class MainWindowController {
                         }
                     }
 
+                    TreeItem<String> priorItem = new TreeItem<>("Приоритет: " + work.getPriority());
+                    workItem.getChildren().add(priorItem);
+
                     TreeItem<String> descItem = new TreeItem<>(work.getDeskWork());
                     workItem.getChildren().add(descItem);
 
+                    TreeItem<String> priceItem = new TreeItem<>("Цена: " + work.getPrice());
+                    workItem.getChildren().add(priceItem);
 
+                    TreeItem<String> numberTimeItem = new TreeItem<>("Норма времени: " + work.getTimeTick());
+                    workItem.getChildren().add(numberTimeItem);
+
+                    TreeItem<String> numberWorkersItem = new TreeItem<>("Количество работников: " + work.getNumberWorkers());
+                    workItem.getChildren().add(numberWorkersItem);
                 }
             }
 
         }
-
         tree.setRoot(root);
         tree.setShowRoot(false);
     }
 
     @FXML
     void costProject(ActionEvent event) {
-        costField.setText(String.format("%.3f", calculator.calcCost(Double.parseDouble(priceField.getText()))));
+        costField.setText(String.format("%.2f", calculator.calcCost(Double.parseDouble(priceField.getText()))));
     }
 
     @FXML
     void idoProject(ActionEvent event) {
-        idoField.setText(String.format("%.3f", calculator.calcIdo()));
+        idoField.setText(String.format("%.2f", calculator.calcIdo()));
     }
 
     @FXML
     void kdoProject(ActionEvent event) {
-        kdoField.setText(String.format("%.3f", calculator.calcKdo()));
+        kdoField.setText(String.format("%.2f", calculator.calcCdo()));
     }
 
     @FXML
     void timeProject(ActionEvent event) {
-        timeField.setText(String.format("%.3f", calculator.calcTime()));
+        timeField.setText(String.format("%.2f", calculator.calcTime()));
     }
 
 }

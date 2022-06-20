@@ -4,4 +4,5 @@ public class Floor extends Element {
     public Floor() {
         name = "Пол";
     }
+
 }

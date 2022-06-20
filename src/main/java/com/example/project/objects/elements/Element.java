@@ -1,22 +1,16 @@
 package com.example.project.objects.elements;
 
 public abstract class Element {
-
     String name;
     double square;
     double depth;
 
     public String getFullName() {
-        if (square != 0){
+        if (square != 0) {
             return name + "     |   Площадь загрязнения: " + square + "     Глубина загрязнения: " + depth;
-
-        }else {
+        } else {
             return name + "     |   Работы не требуеются";
         }
-    }
-
-    public String getName() {
-        return name;
     }
 
     public double getSquare() {
@@ -34,4 +28,5 @@ public abstract class Element {
     public void setDepth(double depth) {
         this.depth = depth;
     }
+
 }

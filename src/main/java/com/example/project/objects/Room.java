@@ -12,19 +12,16 @@ public class Room {
     private int id;
     private String name;
     private String place;   // Расположение
-
     private Floor floor;
     private Roof roof;
     private Wall wall;
     private double power;
     private double activity;
 
-    public void setActivity(double activity) {
-        this.activity = activity;
-    }
-
-    public void setPower(double power) {
-        this.power = power;
+    public Room() {
+        floor = new Floor();
+        roof = new Roof();
+        wall = new Wall();
     }
 
     public String getFullName() {
@@ -32,28 +29,37 @@ public class Room {
     }
 
     public Element getElement(String namePart) {
-        Element element = null;
         switch (namePart) {
-            case "Пол" -> element = floor;
-            case "Стены" -> element = wall;
-            case "Потолок" -> element = roof;
+            case "Пол" -> {
+                return floor;
+            }
+            case "Стены" -> {
+                return wall;
+            }
+            case "Потолок" -> {
+                return roof;
+            }
         }
-        return element;
+        return null;
     }
 
     public double getPower() {
         Random random = new Random();
-        double powerRand = this.power;
         if (place.equals("Этаж 1")) {
-            powerRand = random.nextGaussian()*5 + power;
-        }else if (place.equals("Этаж 2")) {
-            powerRand = random.nextGaussian()*10 + power;
+            return random.nextGaussian() * 5 + power;   // Случайное число, с отклонением 5% и мат ожиданием power
+        } else if (place.equals("Этаж 2")) {
+            return random.nextGaussian() * 10 + power;  // Случайное число, с отклонением 10% и мат ожиданием power
+        } else {
+            return power;
         }
-        return powerRand;
     }
 
-    public double getActivity() {
-        return activity;
+    public void setPower(double power) {
+        this.power = power;
+    }
+
+    public void setActivity(double activity) {
+        this.activity = activity;
     }
 
     public int getId() {
@@ -72,10 +78,6 @@ public class Room {
         this.name = name;
     }
 
-    public String getPlace() {
-        return place;
-    }
-
     public void setPlace(String place) {
         this.place = place;
     }
@@ -84,23 +86,12 @@ public class Room {
         return floor;
     }
 
-    public void setFloor(Floor floor) {
-        this.floor = floor;
-    }
-
     public Roof getRoof() {
         return roof;
-    }
-
-    public void setRoof(Roof roof) {
-        this.roof = roof;
     }
 
     public Wall getWall() {
         return wall;
     }
 
-    public void setWall(Wall wall) {
-        this.wall = wall;
-    }
 }

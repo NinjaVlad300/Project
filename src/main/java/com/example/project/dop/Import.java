@@ -1,18 +1,15 @@
 package com.example.project.dop;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.example.project.objects.Room;
-import com.example.project.objects.elements.Floor;
-import com.example.project.objects.elements.Roof;
-import com.example.project.objects.elements.Wall;
 import com.example.project.objects.Work;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Import {
 
@@ -20,7 +17,7 @@ public class Import {
         return new XSSFWorkbook(file);
     }
 
-    public XSSFWorkbook createWorkbook(InputStream inputStream) throws IOException, InvalidFormatException {
+    public XSSFWorkbook createWorkbook(InputStream inputStream) throws IOException {
         return new XSSFWorkbook(inputStream);
     }
 
@@ -63,9 +60,6 @@ public class Import {
 
 
                     Room room = new Room();
-                    Floor floor = new Floor();
-                    Wall wall = new Wall();
-                    Roof roof = new Roof();
 
 
                     for (int i = numCellWithId; i < sheet.getRow(numRowWithId).getLastCellNum(); i++) {
@@ -82,29 +76,18 @@ public class Import {
                                 case "1" -> room.setName(sheet.getRow(j).getCell(i).getStringCellValue());
                                 case "2" -> room.setPlace(sheet.getRow(j).getCell(i).getStringCellValue());
 
-                                case "6.1" -> floor.setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
-                                case "6.2" -> floor.setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.1" -> room.getFloor().setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.2" -> room.getFloor().setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
 
-                                case "6.3" -> wall.setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
-                                case "6.4" -> wall.setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.3" -> room.getWall().setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.4" -> room.getWall().setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
 
-                                case "6.5" -> roof.setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
-                                case "6.6" -> roof.setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.5" -> room.getRoof().setSquare(sheet.getRow(j).getCell(i).getNumericCellValue());
+                                case "6.6" -> room.getRoof().setDepth(sheet.getRow(j).getCell(i).getNumericCellValue());
 
                                 case "7.1" -> room.setPower(sheet.getRow(j).getCell(i).getNumericCellValue());
                                 case "7.2" -> room.setActivity(sheet.getRow(j).getCell(i).getNumericCellValue());
                             }
-
-                            if (floor != null) {
-                                room.setFloor(floor);
-                            }
-                            if (wall != null) {
-                                room.setWall(wall);
-                            }
-                            if (roof != null) {
-                                room.setRoof(roof);
-                            }
-
                         }
                     }
                     if (room.getName() != null) {

@@ -3,141 +3,73 @@ package com.example.project.controllers;
 import com.example.project.dop.Calculator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
-
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
-import java.net.URL;
-import java.util.*;
+import java.util.Map;
 
-public class ColViewController implements Initializable {
-
+public class ColViewController {
+    private final Calculator calculator = new Calculator();
     @FXML
     private BarChart<String, Double> colChart;
-
-    @FXML
-    private CategoryAxis colX;
-
-    @FXML
-    private NumberAxis colY;
-
     @FXML
     private TextField meanField;
-
     @FXML
-    private TextField otkField;
-
+    private TextField deviationField;
     @FXML
     private TextField stepField;
 
+    // Метод, вызываемый автоматически при запуске окна
+    public void initialize() {
+
+        // Запрет на изменение полей для отображения среднего значения и отклонения
+        meanField.setEditable(false);
+        deviationField.setEditable(false);
+
+        fillChart();    // Вызов метода для заполнения графика
+    }
+
     @FXML
     void gen(ActionEvent event) {
-        generate();
+        fillChart();    // Заполнение графика по нажатию кнопки
     }
 
-    private Calculator calculator = new Calculator();
+    private void fillChart() {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        meanField.setEditable(false);
-        otkField.setEditable(false);
-
-        generate();
-
-    }
-
-    Map calc(double[] d, int step) {
-
-        Map<Double, Double> map = new HashMap<Double, Double>();
-        int num = 0;
-
-        int jSChet = 0;
-
-        while (num < d[0]) {
-            num += step;
-        }
-        num = num - step;
-
-        for (int i = 0; i < d.length; i++) {
-
-            int j = 0;
-
-            while (i + 1 != d.length && num <= d[i] && d[i] < num + step) {
-
-                j++;
-
-                i++;
-            }
-
-            num += step;
-
-            while (i != d.length && num < d[i]) {
-                num += step;
-            }
-            num = num - step;
-            if (i + 1 != d.length) {
-                i--;
-            }
-
-            if (i == d.length - 1) {
-                j++;
-            }
-
-            if (j != 0) {
-
-                map.put((double) num, (double) j / d.length);
-            }
-
-            jSChet += j;
-
-        }
-
-        map.entrySet().stream().sorted(Map.Entry.<Double, Double>comparingByKey());
-
-        return map;
-
-    }
-
-    public void generate() {
-
+        // Очищение графика от предыдущих значений
         colChart.getData().clear();
 
-        int size = 10000;
-        int step = Integer.parseInt(stepField.getText());
+        // Получение шага по разделеию элементов
+        // (step == 100    ==>    Все значения в промежутке от 0 до 100 объединяются в одно значение, и суммируется частота)
+        double step = Double.parseDouble(stepField.getText());
 
+        // Получение массива из 10000 значений Коллективной эквивалетной дозы
+        double[] doubles = calculator.calcArrayCdo();
+
+        // Заполнение поля Среднего значения выборки с помощью StatUtils.mean()
+        meanField.setText(String.format("%.2f", StatUtils.mean(doubles)));
+
+
+        // Заполнение поля Отклонения выборки с помощью класса StandardDeviation
+        StandardDeviation sd = new StandardDeviation();
+        deviationField.setText(String.format("%.2f", sd.evaluate(doubles)));
+
+        // Создание карты из массива значений выборки
+        // Key   - значение по оси Х графика, является значением Коллективной эквивалетной дозы отдельного значения в выборке
+        // Value - значение по оси У графика, является частотой  Коллективной эквивалетной дозы отдельного значения в выборке
+        Map<Double, Double> map = calculator.calcMap(doubles, step);
+
+        // Создание хранилища значений для графика
         XYChart.Series<String, Double> series = new XYChart.Series<>();
 
-        double[] doubles = new double[size];
+        // Заполнение хранилища для графика из карты, путем сортировки и последующим заполнением
+        map.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach((item) -> series.getData().add(new XYChart.Data<>(Double.toString(item.getKey()), item.getValue())));
 
-        for (int i = 0; i < doubles.length; i++) {
-            doubles[i] = calculator.calcKdo();
-        }
-
-        Arrays.sort(doubles);
-
-        Map<Double, Double> map = calc(doubles, step);
-
-        map.entrySet().stream().sorted(Map.Entry.<Double, Double>comparingByKey()).forEach((item) -> series.getData().add(new XYChart.Data<>(Double.toString(item.getKey()), item.getValue())));
-
-        for (Map.Entry<Double, Double> item : map.entrySet()) {
-
-            series.getData().add(new XYChart.Data<>(Double.toString(item.getKey()), item.getValue()));
-
-        }
-
+        // Передача данных в график
         colChart.getData().addAll(series);
-
-        meanField.setText(Double.toString(StatUtils.mean(doubles)));
-
-        StandardDeviation sd = new StandardDeviation();
-        otkField.setText(Double.toString(sd.evaluate(doubles)));
 
     }
 
